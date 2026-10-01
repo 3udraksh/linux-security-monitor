@@ -1,6 +1,7 @@
 from src.detection.analyzer import (
     detect_new_processes,
     add_parent_context,
+    analyze_process
 )
 
 
@@ -52,3 +53,21 @@ def test_parent_context():
 
     assert child["parent_name"] == "bash"
     assert child["parent_executable"] == "/usr/bin/bash"
+
+def test_analyze_process():
+    process = {
+        "pid": 200,
+        "username": "root",
+        "exe": "/tmp/test-program",
+        "cmdline": ["curl", "https://example.com"]
+    }
+
+    findings = analyze_process(process)
+
+    assert len(findings) == 3
+
+    rules = [finding["rule"] for finding in findings]
+
+    assert "suspicious_path" in rules
+    assert "root_process" in rules
+    assert "suspicious_command" in rules

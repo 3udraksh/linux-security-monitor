@@ -1,12 +1,13 @@
 import time
 
-from collectors.process_monitor import collect_processes
-from detection.analyzer import (
+from src.collectors.process_monitor import collect_processes
+from src.detection.analyzer import (
     detect_new_processes,
     add_parent_context,
+    analyze_process,
 )
 
-def main():
+def main(): 
     print("Linux Security Monitor")
     print("======================")
     print("Starting process monitoring...\n")
@@ -27,6 +28,8 @@ def main():
         )
 
         for process in new_processes:
+            findings = analyze_process(process)
+
             print(
                 f"\n[NEW PROCESS]\n"
                 f"  PID: {process['pid']}\n"
@@ -38,6 +41,15 @@ def main():
                 f"  Parent: {process['parent_name']}\n"
                 f"  Parent executable: {process['parent_executable']}\n"
             )
+            if findings:
+                print("  Security Findings:")
+
+                for finding in findings:
+                    print(
+                        f"    - [{finding['severity'].upper()}] "
+                        f"{finding['rule']}: "
+                        f"{finding['reason']}"
+                    )
 
         previous_processes = current_processes
 

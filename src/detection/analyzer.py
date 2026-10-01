@@ -1,3 +1,9 @@
+from .rules import (
+    check_suspicious_path,
+    check_root_process,
+    check_suspicious_command,
+)
+
 def get_process_map(processes):
     return {
         process["pid"]: process
@@ -43,3 +49,28 @@ def add_parent_context(processes):
         enriched_processes.append(enriched_process)
 
     return enriched_processes
+def analyze_process(process):
+    findings = []
+
+    if check_suspicious_path(process):
+        findings.append({
+            "rule": "suspicious_path",
+            "severity": "medium",
+            "reason": "Executable is running from a potentially suspicious location"
+        })
+
+    if check_root_process(process):
+        findings.append({
+            "rule": "root_process",
+            "severity": "low",
+            "reason": "Process is running as root"
+        })
+
+    if check_suspicious_command(process):
+        findings.append({
+            "rule": "suspicious_command",
+            "severity": "medium",
+            "reason": "Command contains a security-relevant command pattern"
+        })
+
+    return findings
