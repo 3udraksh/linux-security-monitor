@@ -27,15 +27,17 @@ def collect_processes():
 
     return processes
 
+def format_command(cmdline):
+    if cmdline:
+        return " ".join(cmdline)
+
+    return "N/A"
 
 def display_processes(processes):
     for process in processes:
         command_line = process["cmdline"]
 
-        if command_line:
-            command_line = " ".join(command_line)
-        else:
-            command_line = "N/A"
+        command_line = format_command(process["cmdline"])
 
         create_time = process["create_time"]
 
