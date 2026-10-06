@@ -16,6 +16,7 @@ from src.detection.analyzer import (
 
 from src.detection.network_analyzer import analyze_connection
 
+MONITOR_INTERVAL = 3
 
 def display_process_alert(process, findings):
     print("\n[NEW PROCESS]")
@@ -80,7 +81,7 @@ def main():
     previous_connections = collect_connections()
 
     while True:
-        time.sleep(3)
+        time.sleep(MONITOR_INTERVAL)
 
         # -------------------------
         # PROCESS MONITORING
