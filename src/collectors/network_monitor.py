@@ -84,10 +84,10 @@ def correlate_connections(connections, process_map):
     return correlated
 def connection_key(connection):
     return (
-        connection["pid"],
-        connection["local_address"],
-        connection["remote_address"],
-        connection["status"],
+    connection.get("pid"),
+    connection.get("local_address"),
+    connection.get("remote_address"),
+    connection.get("status"),
     )
 
 
