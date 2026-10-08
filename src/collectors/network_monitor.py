@@ -89,8 +89,7 @@ def connection_key(connection):
     connection.get("remote_address"),
     connection.get("status"),
     )
-
-
+    # kjudhfusdhf
 def detect_new_connections(previous_connections, current_connections):
     previous_keys = {
         connection_key(connection)
