@@ -28,3 +28,13 @@ def test_parse_auth_event_detects_failed_password():
     event = parse_auth_event(line)
 
     assert event["event_type"] == "authentication_failure"
+
+def test_parse_auth_event_classifies_unrecognized_event():
+    line = (
+        "Oct 15 10:30:00 ubuntu sshd[1234]: "
+        "Connection closed by 192.0.2.10 port 54321"
+    )
+
+    event = parse_auth_event(line)
+
+    assert event["event_type"] == "other"
