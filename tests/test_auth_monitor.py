@@ -1,4 +1,4 @@
-from src.collectors.auth_monitor import parse_auth_event
+from src.collectors.auth_monitor import get_new_auth_events, parse_auth_event
 
 
 def test_parse_auth_event_ignores_malformed_line():
@@ -38,3 +38,9 @@ def test_parse_auth_event_classifies_unrecognized_event():
     event = parse_auth_event(line)
 
     assert event["event_type"] == "other"
+
+def test_get_new_auth_events_handles_truncated_log():
+    previous = ["event 1\n", "event 2\n", "event 3\n"]
+    current = ["new event\n"]
+
+    assert get_new_auth_events(previous, current) == current
